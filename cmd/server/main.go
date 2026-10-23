@@ -10,6 +10,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/MishaEn/techstore-user-service/internal/auth"
 	"github.com/MishaEn/techstore-user-service/internal/config"
 	"github.com/MishaEn/techstore-user-service/internal/httpapi"
 	"github.com/MishaEn/techstore-user-service/internal/repository"
@@ -37,7 +38,8 @@ func main() {
 	defer dbPool.Close()
 	slog.Info("database connected successfully")
 
-	router := httpapi.NewRouter(dbPool)
+	tm := auth.NewTokenManager(cfg.JWTPrivateKey, cfg.JWTPublicKey)
+	router := httpapi.NewRouter(dbPool, tm)
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%s", cfg.HTTPPort),

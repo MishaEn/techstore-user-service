@@ -1,0 +1,47 @@
+image:
+  repository: user-service
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
+
+service:
+  port: 8080
+
+env:
+  - name: HTTP_PORT
+    value: "8080"
+  - name: DB_HOST
+    value: "postgres-postgresql.techstore.svc.cluster.local"
+  - name: DB_PORT
+    value: "5432"
+  - name: DB_NAME
+    value: "users"
+  - name: DB_USER
+    value: "techstore"
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: user-service-secrets
+        key: db-password
+  - name: JWT_PRIVATE_KEY
+    valueFrom:
+      secretKeyRef:
+        name: user-service-secrets
+        key: jwt-private
+  - name: JWT_PUBLIC_KEY
+    valueFrom:
+      secretKeyRef:
+        name: user-service-secrets
+        key: jwt-public
+
+secret:
+  create: true
+  data:
+    db-password: "dev-techstore-pass"
+    jwt-private: |
+      -----BEGIN PRIVATE KEY-----
+      ВСТАВЬТЕ_СЮДА_СОДЕРЖИМОЕ_jwt-private.pem
+      -----END PRIVATE KEY-----
+    jwt-public: |
+      -----BEGIN PUBLIC KEY-----
+      ВСТАВЬТЕ_СЮДА_СОДЕРЖИМОЕ_jwt-public.pem
+      -----END PUBLIC KEY-----

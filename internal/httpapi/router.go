@@ -6,33 +6,43 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/MishaEn/techstore-user-service/internal/auth"
+	"github.com/MishaEn/techstore-user-service/internal/repository"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type API struct {
-	DB *pgxpool.Pool
+	DB           *pgxpool.Pool
+	UserRepo     *repository.UserRepository
+	TokenManager *auth.TokenManager
 }
 
-func NewRouter(db *pgxpool.Pool) http.Handler {
-	api := &API{DB: db}
-	r := chi.NewRouter()
+func NewRouter(db *pgxpool.Pool, tm *auth.TokenManager) http.Handler {
+	api := &API{
+		DB:           db,
+		UserRepo:     repository.NewUserRepository(db),
+		TokenManager: tm,
+	}
 
-	// Базовые middleware (логирование запросов, восстановление после паник)
+	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
-	r.Use(middleware.Timeout(10 * time.Second))
 
-	// Health checks
 	r.Get("/healthz", api.handleHealthz)
 	r.Get("/readyz", api.handleReadyz)
 
-	// Группируем API v1
 	r.Route("/api/v1", func(r chi.Router) {
-		// Сюда мы добавим /users и /auth на следующем шаге
+		r.Post("/users/register", api.handleRegister)
+		r.Post("/auth/login", api.handleLogin)
+
+		// Защищенные маршруты
+		r.Group(func(r chi.Router) {
+			r.Use(api.AuthMiddleware)
+			r.Get("/users/me", api.handleGetMe)
+		})
 	})
 
 	return r
