@@ -33,15 +33,56 @@ env:
         name: user-service-secrets
         key: jwt-public
 
+migrations:
+  enabled: true
+  command:
+    - "/usr/local/bin/goose"
+    - "-dir"
+    - "/app/migrations"
+    - "postgres"
+    - "postgres://techstore:dev-techstore-pass@postgres-postgresql.techstore.svc.cluster.local:5432/users?sslmode=disable"
+    - "up"
+
 secret:
   create: true
   data:
     db-password: "dev-techstore-pass"
     jwt-private: |
       -----BEGIN PRIVATE KEY-----
-      ВСТАВЬТЕ_СЮДА_СОДЕРЖИМОЕ_jwt-private.pem
+      MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCC3N13hdD3zNkc
+      BggLStrwHB/FLx9SzoMeDFWCIo+hjGh3ctCp3TC6OfdUSZqakB9x6m0uMjnJKzba
+      37lMmdqG19iD1IsGFoP8pM8o/WADPfK4xWxJ4KOtdladWunTWuG3513TPIRxT05B
+      BdCsdcGq0auHMQAS4ezjL5SbwbfErLUf2o/DsW5/ZHQGKKw8cHXXuDUBltpkZoPl
+      oHIGmXWpqULB3lJ9G/EhH5nt6OtO5A6YXj0S59nWeF8UHjRxhqprxEHQxdhDbV9r
+      tjTYWCFkVz0RAaADUFeDCz4x0lbxO5ZGOdrCnPfV9WsMih6aygi4YtyiS0/0BXpM
+      9oK2odHfAgMBAAECggEAAvopY7W8qlaTvep5NmCOmJXbNy46RTUDkKRxMZO9tswt
+      +EG5c5Pfruzwro86IDgVLw9JSprD68q65cHfQlnhud2hRGaKfyn1+MJ7IBCbpZc8
+      NW3wZ8Hfl2uwzsWpujBAIGH4JX0j+jv2qM4MEFBhhpRclafMu6E+NXD4rY57stK+
+      vBV9pFcr7UVWkm/uJ/RW/LNxCJXlmORxQg6UQRw/EJL+kwkIS/o0F8VrUh658+5+
+      qL3DONbHO8GajSODXfZrL0lShcGpX2FiIfnVFbrrXFE9W+CCjJ+0VlNzH5cqzdh2
+      VWNBELdquthKz69kSEOyWJEtvCcsqBl5bBRc8zvdkQKBgQC4H4n8P7EMclzpWvVE
+      5G4elEYGTrttpnF41s+L6IrviK+n2sxSv8IOi7wwr2Bx0L8k3AKmtTU/k9F0M8tb
+      zU/HSmE0caT3zFhN/FPnEIB7WLDCsSwymGKBM29GywH/30UP4x5lGo49FSvKW1wY
+      e41TZYuJ1XMJJQn3l7DPMk3liQKBgQC18rZEkGVLe46FumVD/nhOf/s9+ZuxoO8C
+      Cz0Ds9yzqMbt07xv2yP10WTwys0kC+ORGYRJK7vcnYHzKXSVbSLx8m03FJSUDYfY
+      XrxDNeY6LeL4jS8m08rRU5hIm3mQwhQGq6JV5ckdmwKwqe8EStoMrAiMbvE0j8aJ
+      0wM/3MiKJwKBgQCjZ0ocVaIY+729U33sgBXCibCDlIf+TgLSTUGwVtZGsrXBcAp5
+      PblJE3YWdu5O1AVu/tpTfOoe3F68k+LcPB+bLEWMN3dCe1W7ED6eCCUeUp28i2RA
+      GsEBDNaqqyvBGzK9YMDu1Vx6lTlhwya+i5fm9W2bC5Wl/fsUgsjleS1skQKBgAZX
+      SxrgnWcgCzuF33mbKL4zn6HtTQvHvAyqL5otboekXipzsqGDVaF/hrENoFCdSXUJ
+      Gp8iMw3hP2ImE7YRc6JS/JNq2DLAtfdIde8xtbBZYQuggAAuaWcaLrh5EqeE3AXP
+      fXzY4UVy3Ykiov3XTfobFMEwLJ/UUusCu55CJ4sJAoGAT9MiCnD7tYR06DZGD20Z
+      ShCY946qn9tnXyF5OVUahMGXDHTZWlOY8ycZTOc/TlRJx1ziJVKM+T0wEXQS61Dh
+      L866uLBqwhxYi2gR5nFUvCh1wBokgmbs3OBF2OxekVPUKijmeAg0BadktmXcn4+B
+      qfyyp8T+1YyqS7+/5DPv7oc=
       -----END PRIVATE KEY-----
     jwt-public: |
       -----BEGIN PUBLIC KEY-----
-      ВСТАВЬТЕ_СЮДА_СОДЕРЖИМОЕ_jwt-public.pem
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgtzdd4XQ98zZHAYIC0ra
+      8BwfxS8fUs6DHgxVgiKPoYxod3LQqd0wujn3VEmampAfceptLjI5ySs22t+5TJna
+      htfYg9SLBhaD/KTPKP1gAz3yuMVsSeCjrXZWnVrp01rht+dd0zyEcU9OQQXQrHXB
+      qtGrhzEAEuHs4y+Um8G3xKy1H9qPw7Fuf2R0BiisPHB117g1AZbaZGaD5aByBpl1
+      qalCwd5SfRvxIR+Z7ejrTuQOmF49EufZ1nhfFB40cYaqa8RB0MXYQ21fa7Y02Fgh
+      ZFc9EQGgA1BXgws+MdJW8TuWRjnawpz31fVrDIoemsoIuGLcoktP9AV6TPaCtqHR
+      3wIDAQAB
       -----END PUBLIC KEY-----

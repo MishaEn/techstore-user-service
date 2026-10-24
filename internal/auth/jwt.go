@@ -25,6 +25,7 @@ func (m *TokenManager) GenerateToken(userID uuid.UUID) (string, error) {
 		"sub": userID.String(),
 		"exp": time.Now().Add(15 * time.Minute).Unix(), // Токен живет 15 минут
 		"iat": time.Now().Unix(),
+		"iss": "user-service-key",
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
