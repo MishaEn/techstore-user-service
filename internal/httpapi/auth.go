@@ -36,6 +36,8 @@ func (a *API) handleLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
+
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"access_token": token,
 		"expires_in":   900, // 15 минут в секундах
@@ -78,6 +80,8 @@ func (a *API) handleGetMe(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "user not found", http.StatusNotFound)
 		return
 	}
+
+	w.Header().Set("Content-Type", "application/json")
 
 	json.NewEncoder(w).Encode(user)
 }
